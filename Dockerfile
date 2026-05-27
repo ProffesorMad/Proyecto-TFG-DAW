@@ -1,6 +1,6 @@
 FROM php:8.3-cli
 
-# Instalar dependencias del sistema
+# Dependencias sistema
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -10,34 +10,30 @@ RUN apt-get update && apt-get install -y \
     nodejs \
     npm
 
-# Instalar extensión PostgreSQL
+# PostgreSQL
 RUN docker-php-ext-install pdo pdo_pgsql
 
-# Instalar Composer
+# Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Crear carpeta app
+# Carpeta app
 WORKDIR /app
 
-# Copiar archivos
+# Copiar proyecto
 COPY . .
 
-# Instalar dependencias PHP
+# Instalar PHP
 RUN composer install --no-dev --optimize-autoloader
 
-# Instalar dependencias frontend
+# Frontend
 RUN npm install
-
-# Compilar Tailwind/Vite
 RUN npm run build
 
-# Optimizar Laravel
-RUN php artisan config:cache
-RUN php artisan route:cache
-RUN php artisan view:cache
+# Permisos Laravel
+RUN chmod -R 775 storage bootstrap/cache
 
-# Puerto
+# Puerto Render
 EXPOSE 10000
 
-# Iniciar servidor
-CMD php artisan serve --host=0.0.0.0 --port=10000
+# Start
+CMD php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=10000
