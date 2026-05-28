@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChampionController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SpellController;
 
 
 
@@ -31,5 +32,7 @@ Route::get('/roles', [RoleController::class, 'index'])
 
 Route::get('/roles/{role}', [RoleController::class, 'show'])
     ->name('roles.show');
+
+Route::resource('spells', App\Http\Controllers\SpellController::class);
 
 require __DIR__.'/auth.php';

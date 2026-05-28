@@ -11,7 +11,7 @@ class ChampionController extends Controller
 {
     public function index()
     {
-        $champions = Champion::all();
+        $champions = Champion::orderBy('id')->get();
 
         return view('champions.index', compact('champions'));
     }
