@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Champion;
 
 class TierListController extends Controller
 {
-    //
+    public function index()
+    {
+        $champions = Champion::all();
+
+        return view('tierlists.index', compact('champions'));
+    }
 }

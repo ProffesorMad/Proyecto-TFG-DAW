@@ -243,7 +243,7 @@
 
                     [
                         'title' => 'TierLists',
-                        'route' => '#',
+                        'route' => route('tierlists.index'),
                         'description' => 'Crea listas de campeones y metas.'
                     ],
                 ];

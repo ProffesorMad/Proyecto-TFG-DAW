@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
-
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <head>
 
     <meta charset="UTF-8">
