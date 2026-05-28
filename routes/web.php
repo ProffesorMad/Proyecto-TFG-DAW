@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChampionController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\RoleController;
+
 
 
 Route::get('/', function () {
@@ -23,4 +25,11 @@ Route::middleware('auth')->group(function () {
 Route::resource('champions', ChampionController::class);
 
 Route::resource('items', ItemController::class);
+
+Route::get('/roles', [RoleController::class, 'index'])
+    ->name('roles.index');
+
+Route::get('/roles/{role}', [RoleController::class, 'show'])
+    ->name('roles.show');
+
 require __DIR__.'/auth.php';
