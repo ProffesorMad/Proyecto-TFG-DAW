@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y \
     npm
 
 # PostgreSQL
-RUN docker-php-ext-install pdo pdo_pgsql
+RUN docker-php-ext-install pdo pdo_pgsql pgsql
 
 # Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -36,4 +36,4 @@ RUN chmod -R 775 storage bootstrap/cache
 EXPOSE 10000
 
 # Start
-CMD php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=10000
+CMD php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=$PORT
