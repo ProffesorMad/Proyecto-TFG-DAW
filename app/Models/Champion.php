@@ -6,6 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Champion extends Model
 {
+    protected $fillable = [
+        'name',
+        'description',
+        'role',
+        'image',
+        'region',
+        'damage_type',
+        'resource',
+        'release_year'
+    ];
+
     public function abilities()
     {
         return $this->hasMany(Ability::class);
