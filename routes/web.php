@@ -7,6 +7,7 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RandomBuildController;
 use App\Http\Controllers\TierListController;
+use App\Http\Controllers\ForumController;
 
 Route::get('/', function ()
 {
@@ -60,6 +61,27 @@ Route::middleware('auth')->group(function ()
 {
     Route::get('/tierlists', [TierListController::class, 'index'])
         ->name('tierlists.index');
+});
+
+Route::middleware('auth')->group(function ()
+{
+    Route::get('/forums', [ForumController::class, 'index'])
+        ->name('forums.index');
+
+    Route::get('/forums/create', [ForumController::class, 'create'])
+        ->name('forums.create');
+
+    Route::post('/forums/store', [ForumController::class, 'store'])
+        ->name('forums.store');
+
+    Route::get('/forums/{thread}', [ForumController::class, 'show'])
+        ->name('forums.show');
+
+    Route::post('/forums/{thread}/message', [ForumController::class, 'message'])
+        ->name('forums.message');
+
+    Route::get('/my-forums', [ForumController::class, 'myForums'])
+        ->name('forums.my');
 });
 
 require __DIR__.'/auth.php';

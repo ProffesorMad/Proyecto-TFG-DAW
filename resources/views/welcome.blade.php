@@ -403,7 +403,7 @@
 
         <div class="grid md:grid-cols-3 gap-8">
 
-            <a href="#"
+            <a href="{{ route('forums.index') }}"
                class="block card-bg gold-border rounded-3xl p-8 text-center hover-card transition hover:scale-105">
 
                 <h3 class="text-2xl font-black text-yellow-500 mb-4">

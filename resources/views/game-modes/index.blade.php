@@ -21,12 +21,20 @@
 
                 </a>
 
-                <a href="{{ route('game-modes.create') }}"
-                   class="bg-blue-500 hover:bg-blue-600 px-6 py-3 rounded-xl font-bold transition">
+                @auth
 
-                    Añadir Modo de Juego
+                    @if(auth()->user()->email === 'Admin@gmail.com')
 
-                </a>
+                        <a href="{{ route('game-modes.create') }}"
+                           class="bg-blue-500 hover:bg-blue-600 px-6 py-3 rounded-xl font-bold transition">
+
+                            Añadir Modo de Juego
+
+                        </a>
+
+                    @endif
+
+                @endauth
 
             </div>
 

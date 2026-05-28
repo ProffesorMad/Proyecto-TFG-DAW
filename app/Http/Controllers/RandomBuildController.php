@@ -30,16 +30,14 @@ class RandomBuildController extends Controller
 
         $lane = $lanes[array_rand($lanes)];
 
-        $boots = Item::whereRaw('LOWER(type) = ?', ['bota'])
+        $boots = Item::whereIn('type', ['Botas', 'Bota'])
             ->inRandomOrder()
             ->first();
 
-        $normalItems = Item::whereRaw('LOWER(type) != ?', ['bota'])
+        $normalItems = Item::whereNotIn('type', ['Botas', 'Bota'])
             ->inRandomOrder()
-            ->get()
-            ->unique('id')
             ->take(5)
-            ->values();
+            ->get();
 
         $items = collect();
 
@@ -48,7 +46,12 @@ class RandomBuildController extends Controller
             $items->push($item);
         }
 
-        $items->push($boots);
+        if ($boots)
+        {
+            $items->push($boots);
+        }
+
+        $items = $items->shuffle();
 
 
         if ($lane === 'Jungla')
