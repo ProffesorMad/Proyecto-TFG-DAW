@@ -21,12 +21,20 @@
 
                 </a>
 
-                <a href="{{ route('spells.create') }}"
-                   class="bg-blue-500 hover:bg-blue-600 px-6 py-3 rounded-xl font-bold transition">
+                @auth
 
-                    Crear Hechizo
+                    @if(auth()->user()->email === 'Admin@gmail.com')
 
-                </a>
+                        <a href="{{ route('spells.create') }}"
+                           class="bg-blue-500 hover:bg-blue-600 px-6 py-3 rounded-xl font-bold transition">
+
+                            Crear Hechizo
+
+                        </a>
+
+                    @endif
+
+                @endauth
 
             </div>
 
@@ -49,6 +57,7 @@
 
                     <div onclick="openSpellModal('{{ $spell->video_url }}')"
                          class="bg-[#0d0d0d] border border-yellow-700 rounded-2xl overflow-hidden shadow-xl hover:scale-[1.02] transition cursor-pointer">
+
                         {{-- IMAGEN --}}
                         <div class="h-40 bg-black flex items-center justify-center border-b border-yellow-900 p-4">
 
@@ -71,51 +80,60 @@
                             <div class="space-y-3 mb-8">
 
                                 <p>
-                                <span class="text-cyan-400 font-bold">
-                                    Modos:
-                                </span>
+                                    <span class="text-cyan-400 font-bold">
+                                        Modos:
+                                    </span>
 
                                     {{ $spell->game_modes }}
                                 </p>
 
                                 <p>
-                                <span class="text-orange-400 font-bold">
-                                    Enfriamiento:
-                                </span>
+                                    <span class="text-orange-400 font-bold">
+                                        Enfriamiento:
+                                    </span>
 
                                     {{ $spell->cooldown }}
                                 </p>
 
                             </div>
 
-                            {{-- BOTONES --}}
-                            <div class="flex gap-3">
+                            {{-- BOTONES SOLO ADMIN --}}
+                            @auth
 
-                                <a href="{{ route('spells.edit', $spell) }}"
-                                   class="bg-yellow-500 hover:bg-yellow-600 text-black px-5 py-3 rounded-xl font-bold transition">
+                                @if(auth()->user()->email === 'Admin@gmail.com')
 
-                                    Editar
+                                    <div class="flex gap-3">
 
-                                </a>
+                                        <a href="{{ route('spells.edit', $spell) }}"
+                                           onclick="event.stopPropagation()"
+                                           class="bg-yellow-500 hover:bg-yellow-600 text-black px-5 py-3 rounded-xl font-bold transition">
 
-                                <form action="{{ route('spells.destroy', $spell) }}"
-                                      method="POST"
-                                      class="delete-form">
+                                            Editar
 
-                                    @csrf
-                                    @method('DELETE')
+                                        </a>
 
-                                    <button type="button"
-                                            onclick="openDeleteModal(this)"
-                                            class="bg-red-500 hover:bg-red-600 px-5 py-3 rounded-xl font-bold transition">
+                                        <form action="{{ route('spells.destroy', $spell) }}"
+                                              method="POST"
+                                              class="delete-form">
 
-                                        Eliminar
+                                            @csrf
+                                            @method('DELETE')
 
-                                    </button>
+                                            <button type="button"
+                                                    onclick="event.stopPropagation(); openDeleteModal(this)"
+                                                    class="bg-red-500 hover:bg-red-600 px-5 py-3 rounded-xl font-bold transition">
 
-                                </form>
+                                                Eliminar
 
-                            </div>
+                                            </button>
+
+                                        </form>
+
+                                    </div>
+
+                                @endif
+
+                            @endauth
 
                         </div>
 
@@ -142,7 +160,12 @@
             <p class="text-gray-300 mb-6">
                 ¿Estás seguro de querer eliminar este hechizo?
                 <br><br>
-                Escribe <span class="text-red-400 font-bold">CONFIRMAR</span>
+
+                Escribe
+                <span class="text-red-400 font-bold">
+                    CONFIRMAR
+                </span>
+
                 para continuar.
             </p>
 
@@ -173,55 +196,6 @@
 
     </div>
 
-    <script>
-
-        let currentForm = null;
-
-        function openDeleteModal(button)
-        {
-            currentForm = button.closest('form');
-
-            document.getElementById('deleteModal').classList.remove('hidden');
-            document.getElementById('deleteModal').classList.add('flex');
-
-            document.getElementById('confirmInput').value = '';
-
-            document.getElementById('confirmDeleteBtn').disabled = true;
-            document.getElementById('confirmDeleteBtn').classList.add('opacity-50');
-        }
-
-        function closeDeleteModal()
-        {
-            document.getElementById('deleteModal').classList.add('hidden');
-            document.getElementById('deleteModal').classList.remove('flex');
-        }
-
-        document.getElementById('confirmInput').addEventListener('input', function()
-        {
-            const button = document.getElementById('confirmDeleteBtn');
-
-            if (this.value === 'CONFIRMAR')
-            {
-                button.disabled = false;
-                button.classList.remove('opacity-50');
-            }
-            else
-            {
-                button.disabled = true;
-                button.classList.add('opacity-50');
-            }
-        });
-
-        document.getElementById('confirmDeleteBtn').addEventListener('click', function()
-        {
-            if (currentForm)
-            {
-                currentForm.submit();
-            }
-        });
-
-    </script>
-
     {{-- MODAL VIDEO --}}
     <div id="spellModal"
          class="fixed inset-0 bg-black/90 hidden items-center justify-center z-50 p-10">
@@ -250,13 +224,73 @@
 
     <script>
 
+        let currentForm = null;
+
+        function openDeleteModal(button)
+        {
+            currentForm = button.closest('form');
+
+            document.getElementById('deleteModal')
+                .classList.remove('hidden');
+
+            document.getElementById('deleteModal')
+                .classList.add('flex');
+
+            document.getElementById('confirmInput').value = '';
+
+            document.getElementById('confirmDeleteBtn').disabled = true;
+
+            document.getElementById('confirmDeleteBtn')
+                .classList.add('opacity-50');
+        }
+
+        function closeDeleteModal()
+        {
+            document.getElementById('deleteModal')
+                .classList.add('hidden');
+
+            document.getElementById('deleteModal')
+                .classList.remove('flex');
+        }
+
+        document.getElementById('confirmInput')
+            .addEventListener('input', function()
+            {
+                const button =
+                    document.getElementById('confirmDeleteBtn');
+
+                if (this.value === 'CONFIRMAR')
+                {
+                    button.disabled = false;
+
+                    button.classList.remove('opacity-50');
+                }
+                else
+                {
+                    button.disabled = true;
+
+                    button.classList.add('opacity-50');
+                }
+            });
+
+        document.getElementById('confirmDeleteBtn')
+            .addEventListener('click', function()
+            {
+                if (currentForm)
+                {
+                    currentForm.submit();
+                }
+            });
+
         function openSpellModal(videoUrl)
         {
             if(!videoUrl) return;
 
-            const modal = document.getElementById('spellModal');
+            const modal =
+                document.getElementById('spellModal');
 
-            const video = document.getElementById('spellVideo');
+            const video =
+                document.getElementById('spellVideo');
 
             video.src = videoUrl;
 
@@ -271,9 +305,11 @@
 
         function closeSpellModal()
         {
-            const modal = document.getElementById('spellModal');
+            const modal =
+                document.getElementById('spellModal');
 
-            const video = document.getElementById('spellVideo');
+            const video =
+                document.getElementById('spellVideo');
 
             video.pause();
 
@@ -284,13 +320,14 @@
             modal.classList.remove('flex');
         }
 
-        document.getElementById('spellModal').addEventListener('click', function(e)
-        {
-            if(e.target === this)
+        document.getElementById('spellModal')
+            .addEventListener('click', function(e)
             {
-                closeSpellModal();
-            }
-        });
+                if(e.target === this)
+                {
+                    closeSpellModal();
+                }
+            });
 
     </script>
 

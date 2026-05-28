@@ -7,6 +7,17 @@ use Illuminate\Http\Request;
 
 class ItemController extends Controller
 {
+    private function checkAdmin()
+    {
+        if (
+            !auth()->check()
+            || auth()->user()->email !== 'Admin@gmail.com'
+        )
+        {
+            abort(403);
+        }
+    }
+
     public function index()
     {
         $items = Item::orderBy('id')->get();
@@ -16,11 +27,15 @@ class ItemController extends Controller
 
     public function create()
     {
+        $this->checkAdmin();
+
         return view('items.create');
     }
 
     public function store(Request $request)
     {
+        $this->checkAdmin();
+
         Item::create([
 
             'name' => $request->name,
@@ -45,11 +60,15 @@ class ItemController extends Controller
 
     public function edit(Item $item)
     {
+        $this->checkAdmin();
+
         return view('items.edit', compact('item'));
     }
 
     public function update(Request $request, Item $item)
     {
+        $this->checkAdmin();
+
         $item->update([
 
             'name' => $request->name,
@@ -74,6 +93,8 @@ class ItemController extends Controller
 
     public function destroy(Item $item)
     {
+        $this->checkAdmin();
+
         $item->delete();
 
         return redirect()->route('items.index');

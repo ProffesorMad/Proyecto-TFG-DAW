@@ -6,6 +6,7 @@
 
         {{-- HEADER --}}
         <header class="border-b border-yellow-600 bg-[#050505]">
+
             <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
 
                 <a href="/" class="flex items-center gap-4">
@@ -19,12 +20,23 @@
 
                 </a>
 
-                <a href="{{ route('items.create') }}"
-                   class="bg-blue-500 hover:bg-blue-600 px-6 py-3 rounded-xl font-bold transition">
-                    Crear Objeto
-                </a>
+                @auth
+
+                    @if(auth()->user()->email === 'Admin@gmail.com')
+
+                        <a href="{{ route('items.create') }}"
+                           class="bg-blue-500 hover:bg-blue-600 px-6 py-3 rounded-xl font-bold transition">
+
+                            Crear Objeto
+
+                        </a>
+
+                    @endif
+
+                @endauth
 
             </div>
+
         </header>
 
         {{-- CONTENIDO --}}
@@ -34,12 +46,16 @@
 
                 <button id="btnNormal"
                         class="filter-btn bg-yellow-500 text-black px-5 py-2 rounded-lg font-bold">
+
                     Normal
+
                 </button>
 
                 <button id="btnBoots"
                         class="filter-btn bg-gray-800 border border-gray-700 px-5 py-2 rounded-lg font-bold">
+
                     Botas
+
                 </button>
 
             </div>
@@ -91,23 +107,36 @@
 
                             </div>
 
-                            {{-- BOTONES --}}
-                            <div class="flex gap-3 mt-6">
+                            {{-- BOTONES SOLO ADMIN --}}
+                            @auth
 
-                                <a href="{{ route('items.edit', $item) }}"
-                                   class="bg-yellow-500 hover:bg-yellow-400 text-black font-bold px-4 py-2 rounded-lg transition">
-                                    Editar
-                                </a>
+                                @if(auth()->user()->email === 'Admin@gmail.com')
 
-                                <button
-                                    onclick="openDeleteModal({{ $item->id }})"
-                                    class="bg-red-500 hover:bg-red-600 font-bold px-4 py-2 rounded-lg transition">
-                                    Eliminar
-                                </button>
+                                    <div class="flex gap-3 mt-6">
 
-                            </div>
+                                        <a href="{{ route('items.edit', $item) }}"
+                                           class="bg-yellow-500 hover:bg-yellow-400 text-black font-bold px-4 py-2 rounded-lg transition">
+
+                                            Editar
+
+                                        </a>
+
+                                        <button
+                                            onclick="openDeleteModal({{ $item->id }})"
+                                            class="bg-red-500 hover:bg-red-600 font-bold px-4 py-2 rounded-lg transition">
+
+                                            Eliminar
+
+                                        </button>
+
+                                    </div>
+
+                                @endif
+
+                            @endauth
 
                         </div>
+
                     </div>
 
                 @endforeach
@@ -146,19 +175,25 @@
                         onclick="confirmDelete()"
                         disabled
                         class="bg-red-500 opacity-50 cursor-not-allowed px-6 py-3 rounded-xl font-bold transition">
+
                     Eliminar
+
                 </button>
 
                 <button onclick="closeDeleteModal()"
                         class="bg-gray-700 hover:bg-gray-600 px-6 py-3 rounded-xl font-bold">
+
                     Cancelar
+
                 </button>
 
             </div>
 
             <form id="deleteForm" method="POST">
+
                 @csrf
                 @method('DELETE')
+
             </form>
 
         </div>
@@ -265,7 +300,7 @@
                 .forEach(card => {
 
                     card.style.display =
-                        card.dataset.type === 'Bota'
+                        card.dataset.type === 'Botas'
                             ? 'block'
                             : 'none';
                 });

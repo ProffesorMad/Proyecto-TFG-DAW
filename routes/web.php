@@ -6,6 +6,7 @@ use App\Http\Controllers\ChampionController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RandomBuildController;
+use App\Http\Controllers\TierListController;
 
 Route::get('/', function ()
 {
@@ -55,7 +56,10 @@ Route::middleware('auth')->group(function ()
         ->name('randomizer.builds');
 });
 
-Route::get('/tierlists', [App\Http\Controllers\TierListController::class, 'index'])
-    ->name('tierlists.index');
+Route::middleware('auth')->group(function ()
+{
+    Route::get('/tierlists', [TierListController::class, 'index'])
+        ->name('tierlists.index');
+});
 
 require __DIR__.'/auth.php';

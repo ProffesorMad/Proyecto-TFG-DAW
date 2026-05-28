@@ -9,6 +9,17 @@ use Illuminate\Http\Request;
 
 class ChampionController extends Controller
 {
+    private function checkAdmin()
+    {
+        if (
+            !auth()->check()
+            || auth()->user()->email !== 'Admin@gmail.com'
+        )
+        {
+            abort(403);
+        }
+    }
+
     public function index()
     {
         $champions = Champion::orderBy('id')->get();
@@ -25,19 +36,23 @@ class ChampionController extends Controller
 
     public function create()
     {
+        $this->checkAdmin();
+
         return view('champions.create');
     }
 
     public function store(Request $request)
     {
+        $this->checkAdmin();
+
         $champion = Champion::create([
 
             'name' => $request->name,
             'description' => $request->description,
             'role' => $request->role,
 
-            // SI NO HAY IMAGEN -> PLACEHOLDER
-            'image' => $request->image ?: 'https://placehold.co/800x800/111111/facc15?text=Champion',
+            'image' => $request->image
+                ?: 'https://placehold.co/800x800/111111/facc15?text=Champion',
 
             'region' => $request->region,
             'damage_type' => $request->damage_type,
@@ -46,7 +61,6 @@ class ChampionController extends Controller
 
         ]);
 
-        // HABILIDADES
         if ($request->abilities)
         {
             foreach ($request->abilities as $index => $ability)
@@ -73,7 +87,6 @@ class ChampionController extends Controller
             }
         }
 
-        // SKINS
         if ($request->skins)
         {
             foreach ($request->skins as $skin)
@@ -101,6 +114,8 @@ class ChampionController extends Controller
 
     public function edit(Champion $champion)
     {
+        $this->checkAdmin();
+
         $champion->load('abilities', 'skins');
 
         return view('champions.edit', compact('champion'));
@@ -108,6 +123,8 @@ class ChampionController extends Controller
 
     public function update(Request $request, Champion $champion)
     {
+        $this->checkAdmin();
+
         $champion->update([
 
             'name' => $request->name,
@@ -124,10 +141,8 @@ class ChampionController extends Controller
 
         ]);
 
-        // BORRAR HABILIDADES ANTERIORES
         $champion->abilities()->delete();
 
-        // CREAR NUEVAS
         if ($request->abilities)
         {
             foreach ($request->abilities as $index => $ability)
@@ -154,10 +169,8 @@ class ChampionController extends Controller
             }
         }
 
-        // BORRAR SKINS
         $champion->skins()->delete();
 
-        // CREAR NUEVAS
         if ($request->skins)
         {
             foreach ($request->skins as $skin)
@@ -185,6 +198,8 @@ class ChampionController extends Controller
 
     public function destroy(Champion $champion)
     {
+        $this->checkAdmin();
+
         $champion->delete();
 
         return redirect()->route('champions.index');

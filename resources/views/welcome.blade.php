@@ -201,7 +201,7 @@
 
         </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-7 gap-5 mb-20">
+        <div class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-5 gap-8">
 
             @php
                 $cards = [
@@ -235,17 +235,6 @@
                         'description' => 'Explora todos los modos de juego disponibles.'
                     ],
 
-                    [
-                        'title' => 'Randomizador',
-                        'route' => route('randomizer.index'),
-                        'description' => 'Genera builds aleatorias divertidas.'
-                    ],
-
-                    [
-                        'title' => 'TierLists',
-                        'route' => route('tierlists.index'),
-                        'description' => 'Crea listas de campeones y metas.'
-                    ],
                 ];
             @endphp
 
@@ -414,19 +403,21 @@
 
         <div class="grid md:grid-cols-3 gap-8">
 
-            <div class="card-bg gold-border rounded-3xl p-8 text-center hover-card">
+            <a href="#"
+               class="block card-bg gold-border rounded-3xl p-8 text-center hover-card transition hover:scale-105">
 
                 <h3 class="text-2xl font-black text-yellow-500 mb-4">
-                    Favoritos
+                    Foro
                 </h3>
 
-                <p class="text-gray-400">
-                    Guarda tus campeones favoritos para acceder rápidamente.
+                <p class="text-gray-400 leading-relaxed max-w-[240px] mx-auto">
+                    Chatea con otros usuarios en nuestros foros.
                 </p>
 
-            </div>
+            </a>
 
-            <div class="card-bg gold-border rounded-3xl p-8 text-center hover-card">
+            <a href="{{ route('randomizer.index') }}"
+               class="block card-bg gold-border rounded-3xl p-8 text-center hover-card transition hover:scale-105">
 
                 <h3 class="text-2xl font-black text-red-500 mb-4">
                     Randomizador
@@ -436,9 +427,10 @@
                     Acceso completo al randomizador de builds y campeones.
                 </p>
 
-            </div>
+            </a>
 
-            <div class="card-bg gold-border rounded-3xl p-8 text-center hover-card">
+            <a href="{{ route('tierlists.index') }}"
+               class="block card-bg gold-border rounded-3xl p-8 text-center hover-card transition hover:scale-105">
 
                 <h3 class="text-2xl font-black text-yellow-500 mb-4">
                     TierLists
@@ -448,7 +440,7 @@
                     Guarda tus TierLists personalizadas.
                 </p>
 
-            </div>
+            </a>
 
         </div>
 

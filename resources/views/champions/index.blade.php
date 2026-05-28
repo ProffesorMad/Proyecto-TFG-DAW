@@ -24,10 +24,20 @@
 
         </a>
 
-        <a href="{{ route('champions.create') }}"
-           class="bg-blue-500 hover:bg-blue-600 px-5 py-2 rounded-lg font-bold transition">
-            Crear Campeón
-        </a>
+        @auth
+
+            @if(auth()->user()->email === 'Admin@gmail.com')
+
+                <a href="{{ route('champions.create') }}"
+                   class="bg-blue-500 hover:bg-blue-600 px-5 py-2 rounded-lg font-bold transition">
+
+                    Crear Campeón
+
+                </a>
+
+            @endif
+
+        @endauth
 
     </div>
 
@@ -68,22 +78,32 @@
 
                 </a>
 
-                <div class="px-6 pb-6 flex gap-3">
+                @auth
 
-                    <a href="{{ route('champions.edit', $champion) }}"
-                       class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg font-bold transition">
-                        Editar
-                    </a>
+                    @if(auth()->user()->email === 'Admin@gmail.com')
 
-                    <button
-                        onclick="openDeleteModal({{ $champion->id }}, '{{ $champion->name }}')"
-                        class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg font-bold transition">
+                        <div class="px-6 pb-6 flex gap-3">
 
-                        Eliminar
+                            <a href="{{ route('champions.edit', $champion) }}"
+                               class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg font-bold transition">
 
-                    </button>
+                                Editar
 
-                </div>
+                            </a>
+
+                            <button
+                                onclick="openDeleteModal({{ $champion->id }}, '{{ $champion->name }}')"
+                                class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg font-bold transition">
+
+                                Eliminar
+
+                            </button>
+
+                        </div>
+
+                    @endif
+
+                @endauth
 
             </div>
 
