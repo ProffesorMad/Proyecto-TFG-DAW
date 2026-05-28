@@ -7,13 +7,12 @@
             <!-- LOGO -->
             <div class="flex items-center gap-4">
 
-                <a href="{{ route('dashboard') }}" class="flex items-center gap-4">
+                <a href="{{ url('/dashboard') }}" class="flex items-center gap-3">
 
-                    <img src="/images/logo.png"
-                         alt="Logo"
-                         class="w-14 h-14 rounded-full border border-yellow-500 object-cover">
+                    <img src="{{ asset('images/logo.png') }}"
+                         class="w-10 h-10 rounded-full object-cover">
 
-                    <span class="text-4xl font-extrabold text-yellow-400">
+                    <span class="text-yellow-400 font-black text-2xl">
                         Road To The Nexo
                     </span>
 

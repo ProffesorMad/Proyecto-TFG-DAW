@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -72,19 +73,65 @@
         <!-- BUTTONS -->
         <div class="flex items-center gap-4">
 
-            <a
-                href="{{ route('login') }}"
-                class="px-6 py-2 rounded-full border border-yellow-600 text-yellow-500 hover:bg-yellow-600 hover:text-black transition font-semibold"
-            >
-                Login
-            </a>
+            @auth
 
-            <a
-                href="{{ route('register') }}"
-                class="px-6 py-2 rounded-full bg-red-800 hover:bg-red-700 transition font-semibold"
-            >
-                Registro
-            </a>
+                {{-- USER INFO --}}
+                <div class="flex items-center gap-3 bg-[#111111] border border-yellow-700 rounded-full px-5 py-2">
+
+                    <div class="w-10 h-10 rounded-full bg-yellow-500 flex items-center justify-center text-black font-black text-lg">
+
+                        {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+
+                    </div>
+
+                    <div class="pr-2">
+
+                        <p class="text-gray-400 text-xs leading-none mb-1">
+                            Conectado como
+                        </p>
+
+                        <p class="text-yellow-400 font-bold leading-none">
+                            {{ Auth::user()->name }}
+                        </p>
+
+                    </div>
+
+                </div>
+
+                {{-- LOGOUT --}}
+                <form method="POST"
+                      action="{{ route('logout') }}">
+
+                    @csrf
+
+                    <button
+                        type="submit"
+                        class="px-6 py-2 rounded-full bg-red-700 hover:bg-red-600 transition font-semibold"
+                    >
+                        Cerrar sesión
+                    </button>
+
+                </form>
+
+            @else
+
+                {{-- LOGIN --}}
+                <a
+                    href="{{ route('login') }}"
+                    class="px-6 py-2 rounded-full border border-yellow-600 text-yellow-500 hover:bg-yellow-600 hover:text-black transition font-semibold"
+                >
+                    Login
+                </a>
+
+                {{-- REGISTER --}}
+                <a
+                    href="{{ route('register') }}"
+                    class="px-6 py-2 rounded-full bg-red-800 hover:bg-red-700 transition font-semibold"
+                >
+                    Registro
+                </a>
+
+            @endauth
 
         </div>
 
@@ -154,66 +201,70 @@
 
         </div>
 
-        <!-- MINI CARDS -->
         <div class="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-7 gap-5 mb-20">
 
             @php
                 $cards = [
-                    'Campeones',
-                    'Objetos',
-                    'Roles',
-                    'Hechizos',
-                    'Modos',
-                    'Randomizador',
-                    'TierLists'
+                    [
+                        'title' => 'Campeones',
+                        'route' => route('champions.index'),
+                        'description' => 'Descubre estadísticas y habilidades de cada campeón.'
+                    ],
+
+                    [
+                        'title' => 'Objetos',
+                        'route' => route('items.index'),
+                        'description' => 'Aprende builds y combinaciones para cada partida.'
+                    ],
+
+                    [
+                        'title' => 'Roles',
+                        'route' => route('roles.index'),
+                        'description' => 'Entiende cómo se juega cada posición del juego.'
+                    ],
+
+                    [
+                        'title' => 'Hechizos',
+                        'route' => route('spells.index'),
+                        'description' => 'Domina Destello, Prender, Aplastar y más hechizos.'
+                    ],
+
+                    [
+                        'title' => 'Modos',
+                        'route' => route('game-modes.index'),
+                        'description' => 'Explora todos los modos de juego disponibles.'
+                    ],
+
+                    [
+                        'title' => 'Randomizador',
+                        'route' => route('randomizer.index'),
+                        'description' => 'Genera builds aleatorias divertidas.'
+                    ],
+
+                    [
+                        'title' => 'TierLists',
+                        'route' => '#',
+                        'description' => 'Crea listas de campeones y metas.'
+                    ],
                 ];
             @endphp
 
             @foreach($cards as $card)
 
-                <div class="card-bg gold-border rounded-2xl p-6 hover-card text-center">
+                <a
+                    href="{{ $card['route'] }}"
+                    class="card-bg gold-border rounded-2xl p-6 hover-card text-center block"
+                >
 
                     <h3 class="text-yellow-500 font-bold text-lg mb-3">
-                        {{ $card }}
+                        {{ $card['title'] }}
                     </h3>
 
                     <p class="text-gray-400 text-sm leading-relaxed">
-
-                        @switch($card)
-
-                            @case('Campeones')
-                                Descubre estadísticas y habilidades de cada campeón.
-                                @break
-
-                            @case('Objetos')
-                                Aprende builds y combinaciones para cada partida.
-                                @break
-
-                            @case('Roles')
-                                Entiende cómo se juega cada posición del juego.
-                                @break
-
-                            @case('Hechizos')
-                                Domina Destello, Prender, Aplastar y más hechizos.
-                                @break
-
-                            @case('Modos')
-                                Explora todos los modos de juego disponibles.
-                                @break
-
-                            @case('Randomizador')
-                                Genera builds aleatorias divertidas.
-                                @break
-
-                            @case('TierLists')
-                                Crea listas de campeones y metas.
-                                @break
-
-                        @endswitch
-
+                        {{ $card['description'] }}
                     </p>
 
-                </div>
+                </a>
 
             @endforeach
 

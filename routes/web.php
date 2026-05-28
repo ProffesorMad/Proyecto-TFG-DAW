@@ -5,21 +5,24 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChampionController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\RoleController;
-use App\Http\Controllers\SpellController;
+use App\Http\Controllers\RandomBuildController;
 
-
-
-Route::get('/', function () {
+Route::get('/', function ()
+{
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', function ()
+{
+    return redirect('/');
+})->middleware(['auth'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+Route::middleware('auth')->group(function ()
+{
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
@@ -34,5 +37,25 @@ Route::get('/roles/{role}', [RoleController::class, 'show'])
     ->name('roles.show');
 
 Route::resource('spells', App\Http\Controllers\SpellController::class);
+
+Route::resource('game-modes', App\Http\Controllers\GameModeController::class);
+
+Route::middleware('auth')->group(function ()
+{
+    Route::get('/randomizer', [RandomBuildController::class, 'index'])
+        ->name('randomizer.index');
+
+    Route::post('/randomizer/generate', [RandomBuildController::class, 'generate'])
+        ->name('randomizer.generate');
+
+    Route::post('/randomizer/save', [RandomBuildController::class, 'save'])
+        ->name('randomizer.save');
+
+    Route::get('/my-builds', [RandomBuildController::class, 'myBuilds'])
+        ->name('randomizer.builds');
+});
+
+Route::get('/tierlists', [App\Http\Controllers\TierListController::class, 'index'])
+    ->name('tierlists.index');
 
 require __DIR__.'/auth.php';

@@ -9,6 +9,30 @@
 
 <body class="bg-black text-white min-h-screen">
 
+    {{-- HEADER --}}
+    <header class="border-b border-yellow-600 bg-[#050505]">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+
+            <a href="{{ route('items.index') }}"
+               class="flex items-center gap-4">
+
+                <img src="{{ asset('images/logo.png') }}"
+                     class="w-14 h-14 rounded-full">
+
+                <h1 class="text-4xl font-black text-yellow-400">
+                    Road To The Nexo
+                </h1>
+
+            </a>
+
+            <a href="{{ route('champions.index') }}"
+               class="bg-gray-700 hover:bg-gray-600 px-5 py-3 rounded-xl font-bold">
+                Volver
+            </a>
+
+        </div>
+    </header>
+
 <div class="max-w-5xl mx-auto py-16 px-8">
 
     <div class="flex items-center justify-between mb-10">
@@ -16,11 +40,6 @@
         <h1 class="text-5xl font-black text-yellow-400">
             Crear Campeón
         </h1>
-
-        <a href="{{ route('champions.index') }}"
-           class="bg-gray-700 hover:bg-gray-600 px-5 py-3 rounded-xl font-bold">
-            Volver
-        </a>
 
     </div>
 
