@@ -44,15 +44,22 @@
 
             <div class="flex items-center gap-4 mb-12">
 
-                <button id="btnNormal"
-                        class="filter-btn bg-yellow-500 text-black px-5 py-2 rounded-lg font-bold">
+                <button id="btnAll"
+                        class="filter-btn bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded-lg font-bold transition">
 
-                    Normal
+                    Todos
+
+                </button>
+
+                <button id="btnNormal"
+                        class="filter-btn bg-yellow-500 hover:bg-yellow-400 text-black px-5 py-2 rounded-lg font-bold transition">
+
+                    Normales
 
                 </button>
 
                 <button id="btnBoots"
-                        class="filter-btn bg-gray-800 border border-gray-700 px-5 py-2 rounded-lg font-bold">
+                        class="filter-btn bg-gray-800 hover:bg-gray-700 border border-gray-700 px-5 py-2 rounded-lg font-bold transition">
 
                     Botas
 
@@ -278,8 +285,20 @@
         }
 
         {{-- FILTROS --}}
+        const btnAll = document.getElementById('btnAll');
         const btnNormal = document.getElementById('btnNormal');
         const btnBoots = document.getElementById('btnBoots');
+
+        btnAll.addEventListener('click', () => {
+
+            document.querySelectorAll('.item-card')
+                .forEach(card => {
+
+                    card.style.display = 'block';
+
+                });
+
+        });
 
         btnNormal.addEventListener('click', () => {
 
@@ -290,6 +309,7 @@
                         card.dataset.type === 'Normal'
                             ? 'block'
                             : 'none';
+
                 });
 
         });
@@ -300,9 +320,10 @@
                 .forEach(card => {
 
                     card.style.display =
-                        card.dataset.type === 'Botas'
+                        card.dataset.type === 'Bota'
                             ? 'block'
                             : 'none';
+
                 });
 
         });

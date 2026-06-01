@@ -477,11 +477,11 @@
 
         <div class="flex gap-8 text-gray-400 text-sm">
 
-            <a href="#" class="hover:text-yellow-500 transition">
+            <a href="{{ route('login') }}" class="hover:text-yellow-500 transition">
                 Login
             </a>
 
-            <a href="#" class="hover:text-yellow-500 transition">
+            <a href="{{ route('register') }}" class="hover:text-yellow-500 transition">
                 Registro
             </a>
 
