@@ -93,17 +93,6 @@
 
                     </label>
 
-                    @if (Route::has('password.request'))
-
-                        <a href="{{ route('password.request') }}"
-                           class="text-cyan-400 hover:text-cyan-300">
-
-                            ¿Olvidaste tu contraseña?
-
-                        </a>
-
-                    @endif
-
                 </div>
 
                 <button type="submit"
