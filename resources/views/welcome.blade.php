@@ -485,14 +485,6 @@
                 Registro
             </a>
 
-            <a href="#" class="hover:text-yellow-500 transition">
-                Privacidad
-            </a>
-
-            <a href="#" class="hover:text-yellow-500 transition">
-                Aviso legal
-            </a>
-
         </div>
 
     </div>

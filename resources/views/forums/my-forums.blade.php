@@ -9,7 +9,7 @@
 
             <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
 
-                <a href="{{ route('forums.index') }}"
+                <a href="/"
                    class="flex items-center gap-4">
 
                     <img src="{{ asset('images/logo.png') }}"

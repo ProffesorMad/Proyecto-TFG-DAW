@@ -34,7 +34,6 @@ class RegisteredUserController extends Controller
             'name' => [
                 'required',
                 'string',
-                'min:3',
                 'max:255'
             ],
 
@@ -42,33 +41,43 @@ class RegisteredUserController extends Controller
                 'required',
                 'string',
                 'lowercase',
-                'email',
+                'email:rfc,dns',
                 'max:255',
-                'unique:'.User::class
+                'unique:' . User::class,
             ],
 
             'password' => [
                 'required',
                 'confirmed',
-                'min:8',
-                'regex:/[A-Z]/',
-                'regex:/[a-z]/',
-                'regex:/[0-9]/',
-                'regex:/[@$!%*#?&]/'
+
+                Rules\Password::min(8)
+                    ->letters()
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols(),
             ],
         ], [
 
-            'name.required' => 'El nombre es obligatorio.',
-            'name.min' => 'El nombre debe tener mínimo 3 caracteres.',
+            'email.email' =>
+                'Debes introducir un correo electrónico válido.',
 
-            'email.required' => 'El correo es obligatorio.',
-            'email.email' => 'Introduce un correo válido.',
-            'email.unique' => 'Este correo ya está registrado.',
+            'email.unique' =>
+                'Este correo ya está registrado.',
 
-            'password.required' => 'La contraseña es obligatoria.',
-            'password.confirmed' => 'Las contraseñas no coinciden.',
-            'password.min' => 'La contraseña debe tener mínimo 8 caracteres.',
-            'password.regex' => 'La contraseña debe contener mayúsculas, minúsculas, números y caracteres especiales.'
+            'password.min' =>
+                'La contraseña debe tener al menos 8 caracteres.',
+
+            'password.letters' =>
+                'La contraseña debe contener letras.',
+
+            'password.mixed_case' =>
+                'La contraseña debe incluir mayúsculas y minúsculas.',
+
+            'password.numbers' =>
+                'La contraseña debe contener al menos un número.',
+
+            'password.symbols' =>
+                'La contraseña debe contener al menos un símbolo especial.',
         ]);
 
         $user = User::create([
@@ -81,6 +90,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect('/');
+        return redirect(route('dashboard', absolute: false));
     }
 }
