@@ -315,21 +315,95 @@
 
         container.appendChild(block);
 
-            skinIndex++;
-        });
+        skinIndex++;
+    });
 
-        document.addEventListener('click', function(e)
+    let skinToDelete = null;
+
+    function openDeleteSkinModal(button)
+    {
+        skinToDelete = button.closest('.skin-block');
+
+        document
+            .getElementById('deleteSkinModal')
+            .classList.remove('hidden');
+
+        document
+            .getElementById('deleteSkinModal')
+            .classList.add('flex');
+    }
+
+    function closeDeleteSkinModal()
+    {
+        document
+            .getElementById('deleteSkinModal')
+            .classList.add('hidden');
+
+        document
+            .getElementById('deleteSkinModal')
+            .classList.remove('flex');
+
+        skinToDelete = null;
+    }
+
+    function confirmDeleteSkin()
+    {
+        if (skinToDelete)
         {
-            if (e.target.classList.contains('delete-skin-btn'))
-            {
-                if(confirm('¿Eliminar este aspecto?'))
-                {
-                    e.target.closest('.skin-block').remove();
-                }
-            }
-        });
+            skinToDelete.remove();
+        }
+
+        closeDeleteSkinModal();
+    }
+
+    document.addEventListener('click', function(e)
+    {
+        if (e.target.classList.contains('delete-skin-btn'))
+        {
+            openDeleteSkinModal(e.target);
+        }
+    });
 
 </script>
+
+<div id="deleteSkinModal"
+     class="fixed inset-0 bg-black/80 hidden items-center justify-center z-50">
+
+    <div class="bg-[#111111] border border-red-500 rounded-2xl p-8 w-full max-w-md">
+
+        <h2 class="text-3xl font-black text-red-500 mb-4">
+            Confirmar eliminación
+        </h2>
+
+        <p class="text-gray-300 mb-6">
+            ¿Eliminar este aspecto?
+        </p>
+
+        <div class="flex justify-end gap-4">
+
+            <button
+                type="button"
+                onclick="closeDeleteSkinModal()"
+                class="bg-gray-700 hover:bg-gray-600 px-5 py-2 rounded-xl font-bold">
+
+                Cancelar
+
+            </button>
+
+            <button
+                type="button"
+                onclick="confirmDeleteSkin()"
+                class="bg-red-500 hover:bg-red-600 px-5 py-2 rounded-xl font-bold">
+
+                Eliminar
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
 
 </body>
 </html>
