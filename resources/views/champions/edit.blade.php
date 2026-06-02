@@ -199,9 +199,20 @@
 
                     <div class="border border-gray-700 rounded-2xl p-6 mb-6 skin-block">
 
-                        <h3 class="text-2xl font-bold mb-6">
-                            Aspecto {{ $index + 1 }}
-                        </h3>
+                        <div class="flex justify-between items-center mb-6">
+
+                            <h3 class="text-2xl font-bold">
+                                Aspecto {{ $index + 1 }}
+                            </h3>
+
+                            <button type="button"
+                                    class="delete-skin-btn bg-red-600 hover:bg-red-700 px-4 py-2 rounded-xl text-white font-bold">
+
+                                🗑️
+
+                            </button>
+
+                        </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
@@ -267,9 +278,20 @@
 
         block.innerHTML = `
 
-            <h3 class="text-2xl font-bold mb-6">
-                Aspecto ${skinIndex + 1}
-            </h3>
+            <div class="flex justify-between items-center mb-6">
+
+                <h3 class="text-2xl font-bold">
+                    Aspecto ${skinIndex + 1}
+                </h3>
+
+                <button type="button"
+                        class="delete-skin-btn bg-red-600 hover:bg-red-700 px-4 py-2 rounded-xl text-white font-bold">
+
+                    🗑️
+
+                </button>
+
+            </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
@@ -293,12 +315,22 @@
 
         container.appendChild(block);
 
-        skinIndex++;
+            skinIndex++;
+        });
 
-    });
+        document.addEventListener('click', function(e)
+        {
+            if (e.target.classList.contains('delete-skin-btn'))
+            {
+                if(confirm('¿Eliminar este aspecto?'))
+                {
+                    e.target.closest('.skin-block').remove();
+                }
+            }
+        });
 
 </script>
 
 </body>
 </html>
-```
+
