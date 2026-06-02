@@ -209,14 +209,11 @@
 
             </button>
 
-            <video id="spellVideo"
-                   class="w-full rounded-2xl border border-yellow-600 shadow-2xl"
-                   controls
-                   autoplay>
-
-                <source src="" type="video/mp4">
-
-            </video>
+            <iframe id="spellVideo"
+                    class="w-full h-[600px] rounded-2xl border border-yellow-600 shadow-2xl"
+                    src=""
+                    allowfullscreen>
+            </iframe>
 
         </div>
 
@@ -292,15 +289,23 @@
             const video =
                 document.getElementById('spellVideo');
 
-            video.src = videoUrl;
+            let videoId = '';
+
+            if(videoUrl.includes('youtu.be/'))
+            {
+                videoId = videoUrl.split('youtu.be/')[1];
+            }
+            else if(videoUrl.includes('watch?v='))
+            {
+                videoId = videoUrl.split('watch?v=')[1];
+            }
+
+            video.src =
+                'https://www.youtube.com/embed/' + videoId + '?autoplay=1';
 
             modal.classList.remove('hidden');
 
             modal.classList.add('flex');
-
-            video.load();
-
-            video.play();
         }
 
         function closeSpellModal()
@@ -310,8 +315,6 @@
 
             const video =
                 document.getElementById('spellVideo');
-
-            video.pause();
 
             video.src = '';
 
